@@ -1,5 +1,7 @@
 import streamlit as st
 from prediction_helper import predict
+import os
+os.system("pip install joblib")
 
 st.title('Health Insurance Cost Predictor')
 
