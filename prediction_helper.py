@@ -1,11 +1,11 @@
 import pandas as pd
-from joblib import load
+import joblib
 
-model_rest =load("artifacts/model_young.joblib")
-model_young = load("artifacts/model_rest.joblib")
+model_young = joblib.load("artifacts\model_young.joblib")
+model_rest = joblib.load("artifacts\model_rest.joblib")
+scaler_young = joblib.load("artifacts\scaler_young.joblib")
+scaler_rest = joblib.load("artifacts\scaler_rest.joblib")
 
-scaler_rest = load ("artifacts/scaler_rest.joblib")
-scaler_young = load ("artifacts/scaler_with_cols.joblib")
 def calculate_normalized_risk(medical_history):
     risk_scores = {
         "diabetes": 6,
@@ -30,14 +30,17 @@ def calculate_normalized_risk(medical_history):
     return normalized_risk_score
 
 def preprocess_input(input_dict):
-    expected_column = [
+    # Define the expected columns and initialize the DataFrame with zeros
+    expected_columns = [
         'age', 'number_of_dependants', 'income_lakhs', 'insurance_plan', 'genetical_risk', 'normalized_risk_score',
         'gender_Male', 'region_Northwest', 'region_Southeast', 'region_Southwest', 'marital_status_Unmarried',
         'bmi_category_Obesity', 'bmi_category_Overweight', 'bmi_category_Underweight', 'smoking_status_Occasional',
         'smoking_status_Regular', 'employment_status_Salaried', 'employment_status_Self-Employed'
     ]
+
     insurance_plan_encoding = {'Bronze': 1, 'Silver': 2, 'Gold': 3}
-    df = pd.DataFrame(0, columns = expected_column, index=[0])
+
+    df = pd.DataFrame(0, columns=expected_columns, index=[0])
     # df.fillna(0, inplace=True)
 
     # Manually assign values for each categorical input based on input_dict
@@ -86,6 +89,7 @@ def preprocess_input(input_dict):
     df = handle_scaling(input_dict['Age'], df)
 
     return df
+
 def handle_scaling(age, df):
     # scale age and income_lakhs column
     if age <= 25:
@@ -112,6 +116,7 @@ def predict(input_dict):
         prediction = model_rest.predict(input_df)
 
     return int(prediction[0])
+
 
 #preprocessor made to take input dict input and return in form of x_test
 #written on own
