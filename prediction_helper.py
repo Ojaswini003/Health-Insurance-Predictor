@@ -4,8 +4,8 @@ from joblib import load
 model_rest =load("artifacts/model_young.joblib")
 model_young = load("artifacts/model_rest.joblib")
 
-scaler_rest = load ("artifacts/scaler_with_cols.joblib")
-scaler_young = load ("artifacts/scaler_rest.joblib")
+scaler_rest = load ("artifacts/scaler_rest.joblib")
+scaler_young = load ("artifacts/scaler_with_cols.joblib")
 def calculate_normalized_risk(medical_history):
     risk_scores = {
         "diabetes": 6,
